@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 const firstName = "John";
 const userName = "JohnDoe"
 
-function Logout() {
+function LogoutSection() {
     const dispatch = useDispatch();
     return (
         <div className={styles.logout_section}>
@@ -26,4 +26,4 @@ function Logout() {
     )
 }
 
-export default Logout;
+export default LogoutSection;

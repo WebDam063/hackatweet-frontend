@@ -1,11 +1,12 @@
 .logout_section {
     width: 25vw;
     height: 100vh;
-    padding: 5vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: white;
+    padding: 5vh;
+    border-right: 1.5px solid #4f5c6a;
 }
 
 .twitterIcon {
@@ -59,5 +60,6 @@
 }
 
 .userName {
-    color: #4f5c6a;
+    color: #5a6774;
+    font-weight: light;
 }

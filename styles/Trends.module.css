@@ -1,0 +1,22 @@
+.trends_section {
+    width: 30vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    border-left: 1.5px solid #4f5c6a;
+}
+
+.twitterIcon {
+    transform: rotate(180deg);
+}
+
+.title {
+    font-weight: 500;
+   margin: 2.5vh;
+}
+
+.trendContainer {
+    background-color: #1b232c;
+    
+}

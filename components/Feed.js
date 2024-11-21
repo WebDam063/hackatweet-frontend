@@ -3,12 +3,18 @@ import { login } from '../reducers/user'
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router'
 import  styles  from '../styles/Feed.module.css';
-import Logout from './UserLogout'
+import LogoutSection from './LogoutSection';
+import TrendsSection from './TrendsSection'
 
 function Feed(){
   return (
     <div className={styles.body}>
-     <Logout />
+      {/* // Logout section below */}
+     <LogoutSection />
+     {/* Feed section below */}
+
+     {/* Trends section below */}
+     <TrendsSection/>
     </div>
   )
 }
