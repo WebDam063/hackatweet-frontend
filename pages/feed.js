@@ -1,7 +1,7 @@
 import Feed from '../components/Feed';
 
 function FeedPage() {
-    return <Feed />;
+  return <Feed />;
 }
 
 export default FeedPage;

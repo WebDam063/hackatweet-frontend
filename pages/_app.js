@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import '../components/home.css';
+import '../components/newtweet.css'
 import Head from 'next/head';
 import user from '../reducers/user'
 import { Provider } from 'react-redux';

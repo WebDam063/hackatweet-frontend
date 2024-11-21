@@ -15,6 +15,7 @@ export const userSlice = createSlice({
         logout: (state) => {
             state.value.token = null;
             state.value.username = null;
+            console.log('Successfully disconnected')
         },
     },
 });

@@ -1,0 +1,65 @@
+.logout_section {
+    width: 22.5vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    padding: 5vh;
+    border-right: 1.5px solid #4f5c6a;
+}
+
+.twitterIcon {
+    transform: rotate(180deg);
+}
+
+.bottom {
+    width: 15vw;
+    height: 12.5vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.profileIcon {
+    background-image: url('/icons/profile.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 9999px;
+}
+
+.logoutBtn {
+    background-color: transparent;
+    border: 1px solid #4f5c6a;
+    border-radius: 50px;
+    width: 50%;
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.profileInfos {
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+}
+
+.userInfos {
+    display: flex;
+    flex-direction: column;
+    height: 10vh;
+    margin: 10px;
+    justify-content: center;
+}
+
+.firstName {
+    font-weight: bold;
+}
+
+.userName {
+    color: #5a6774;
+    font-weight: light;
+}

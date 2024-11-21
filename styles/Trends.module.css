@@ -1,0 +1,45 @@
+.trends_section {
+    width: 30vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    border-left: 1.5px solid #4f5c6a;
+    padding: 10px 20px;
+}
+
+.twitterIcon {
+    transform: rotate(180deg);
+}
+
+.title {
+   font-weight: 500;
+   margin: 2.5vh;
+   margin-left: 0;
+}
+
+.trendContainer {
+    background-color: #1b232c;
+    padding: 10px;
+    border-radius: 10px;
+    display:flex;
+    flex-direction:column;
+    font-size: 15px;
+}
+
+.trendContainer > .row {
+    text-align:left;
+    padding-left: 15px;
+    margin-bottom: 15px;
+}
+
+.trendContainer > .row > h1 {
+    font-size: 15px;
+    text-align:left;
+    font-weight: bold;
+}
+
+.trendContainer > .row > span {
+    color: #5a6774;
+    text-align:left;
+}
