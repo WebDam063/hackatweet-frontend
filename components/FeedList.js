@@ -9,14 +9,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 function FeedList(){
- const userName = useSelector((state) => state.user.value)
+ const user = useSelector((state) => state.user.value)
 
     fetch('http://localhost:3000/tweets/gettweets', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: userName })
+        body: JSON.stringify({ user })
     }).then((response) => {
         console.log(response.result)
     })
