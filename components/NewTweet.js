@@ -14,12 +14,12 @@ export const NewTweet = () => {
     }
 
     const saveTweet = async () => {
-        const { username } = user
+        const { username, firstname } = user
         const hashtags = extractHashtags(tweetValue)
         const response = await fetch('http://localhost:3000/tweets/newtweet', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify({ username, message: tweetValue, hashtags })
+            body: JSON.stringify({ username, firstname, message: tweetValue, hashtags })
         })
         const dataFromBack = await response.json()
         console.log({ dataFromBack });
