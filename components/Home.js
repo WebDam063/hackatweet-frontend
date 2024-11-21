@@ -10,7 +10,7 @@ function Home() {
 
   return (
     <div className='home-container'>
-      {isSignUp && <SingupModal />}
+      {isSignUp && <SingupModal connectionType='signup' />}
       {/* <div className='image'></div>
 
       <main className='main'>
@@ -38,7 +38,9 @@ function Home() {
 export default Home;
 
 
-const SingupModal = (type = 'signup') => {
+const SingupModal = ({ connectionType }) => {
+  console.log({connectionType});
+  
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.value)
   const [firstname, setFirstname] = useState('')
@@ -102,7 +104,7 @@ const SingupModal = (type = 'signup') => {
       </div>
       <button
         className='button button-signup'
-        onClick={() => fetchBackForSignupSignin('signup')}
+        onClick={() => fetchBackForSignupSignin(connectionType)}
       >
         Sign up
       </button>
