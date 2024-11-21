@@ -19,7 +19,6 @@ export const ConnectionModal = ({ connectionType, setIsSignIn, setIsSignup }) =>
         }
     }
 
-
     const fetchBackForSignupSignin = async (type) => {
         console.log({ username, firstname, password, connectionType });
         const data = {
@@ -34,7 +33,7 @@ export const ConnectionModal = ({ connectionType, setIsSignIn, setIsSignup }) =>
         console.log({dataFromBack});
         
         if (dataFromBack.result) {
-            dispatch(login({ token: dataFromBack.user.token, username: dataFromBack.user.username }))
+            dispatch(login({ token: dataFromBack.user.token, username: dataFromBack.user.username, firstname: dataFromBack.user.firstname }))
             router.push('/feed')
         }
     }
