@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { login } from '../reducers/user'
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router'
+
 function Home() {
   const router = useRouter()
   const [isSignUp, setIsSignup] = useState(true)
