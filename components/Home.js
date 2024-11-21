@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import { login } from '../reducers/user'
+import { useDispatch, useSelector } from 'react-redux';
+import { redirect } from 'next/navigation'
 
 function Home() {
   const [isSignUp, setIsSignup] = useState(true)
@@ -35,20 +38,35 @@ function Home() {
 export default Home;
 
 
-const SingupModal = () => {
+const SingupModal = (type = 'signup') => {
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.value)
   const [firstname, setFirstname] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+
+  useEffect(() => {
+    console.log('debug useEffect', { user });
+
+  })
+
   const fetchBackForSignupSignin = async (type) => {
+    console.log('debug', { type });
+
     if (type === 'signup') {
+      console.log('debug1');
+
       const response = await fetch('http://localhost:3000/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstname, username, password})
+        body: JSON.stringify({ firstname, username, password })
       })
       const dataFromBack = await response.json()
-      
+      if (dataFromBack.result) {
+        dispatch(login({ token: dataFromBack.user.token, username: dataFromBack.user.username }))
+        redirect('/feed')
+      }
     }
   }
 
@@ -82,7 +100,10 @@ const SingupModal = () => {
           onChange={(e) => setPassword(e.target.value)}
         ></input>
       </div>
-      <button className='button button-signup'>
+      <button
+        className='button button-signup'
+        onClick={() => fetchBackForSignupSignin('signup')}
+      >
         Sign up
       </button>
     </div>
