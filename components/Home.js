@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react'
-import { login } from '../reducers/user'
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { ConnectionModal } from './ConnectionModal'
+
 function Home() {
-  const [isSignUp, setIsSignup] = useState(true)
+  const [isSignUp, setIsSignup] = useState(false)
+  const [isSignIn, setIsSignIn] = useState(false)
 
   return (
     <div className='home-container'>
-      {isSignUp && <SingupModal connectionType='signup' />}
-      {/* <div className='image'></div>
+      {isSignUp && <ConnectionModal setIsSignup={setIsSignup} setIsSignIn={setIsSignIn} connectionType='signup' />}
+      {isSignIn && <ConnectionModal setIsSignup={setIsSignup} setIsSignIn={setIsSignIn} connectionType='signin' />}
+      <div className='image'></div>
 
       <main className='main'>
         <div className='logo'>
@@ -23,89 +24,14 @@ function Home() {
         </div>
         <div className='signin'>
           <p>Already have an account</p>
-          <button type='submit' className="button signin-button">
+          <button type='submit' className="button signin-button" onClick={() => setIsSignIn(!isSignUp)}>
             Sign in
           </button>
         </div>
-      </main> */}
+      </main>
     </div>
   );
 }
 
 export default Home;
 
-const SingupModal = ({ connectionType }) => {
-  const router = useRouter()
-
-  console.log({ connectionType });
-
-  const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.value)
-  const [firstname, setFirstname] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
-
-  useEffect(() => {
-    console.log('debug useEffect', { user });
-
-  })
-
-  const fetchBackForSignupSignin = async (type) => {
-    console.log('debug', { type });
-
-    if (type === 'signup') {
-      console.log('debug1');
-
-      const response = await fetch('http://localhost:3000/users/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstname, username, password })
-      })
-      const dataFromBack = await response.json()
-      if (dataFromBack.result) {
-        dispatch(login({ token: dataFromBack.user.token, username: dataFromBack.user.username }))
-        router.push('/feed')
-      }
-    }
-  }
-
-  return (
-    <div className='modal'>
-      <img src='/icons/twitter.png' />
-      <div className='firstname'>
-        <input
-          type='text'
-          className='firstname-input'
-          placeholder='Firstname'
-          value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
-        ></input>
-      </div>
-      <div className='username'>
-        <input
-          type='text'
-          className='username-input'
-          placeholder='Username'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        ></input>
-      </div>
-      <div className='password'>
-        <input
-          type='password'
-          className='password-input'
-          placeholder='Password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></input>
-      </div>
-      <button
-        className='button button-signup'
-        onClick={() => fetchBackForSignupSignin(connectionType)}
-      >
-        Sign up
-      </button>
-    </div>
-  )
-}

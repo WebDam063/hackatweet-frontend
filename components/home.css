@@ -1,7 +1,9 @@
+/* =========== Home ==============*/
 .home-container {
   display: flex;
   color: white;
   background-color: #101b25;
+  font-family: Verdana;
 }
 
 .main {
@@ -21,6 +23,16 @@
   transform: rotate(180deg);
 }
 
+.signup>p {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.signin>p {
+  font-size: 14px;
+  /* font-weight: 100; */
+}
+
 .button {
   width: 150px;
   height: 40px;
@@ -28,4 +40,70 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
+  border: none;
+}
+
+.signup-button {
+  background-color: #3E9BEF;
+  color: white;
+}
+
+.signin-button {
+  background-color: #101b25;
+  color: #3E9BEF;
+  border: 1px solid #4f5c6a;
+}
+
+h1 {
+  font-family: 'Mont-heady';
+  font-size: 50px;
+}
+
+/* =========== Modal ==============*/
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 400px;
+  height: 370px;
+  /* border: 2px solid; */
+  padding: 20px;
+  background-color: #151F2B;
+  border-radius: 8px;
+}
+
+.modal-icon {
+  align-self: center;
+}
+
+.modal-icon-close {
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(284deg) brightness(104%) contrast(104%);
+  transform: scale(0.5);
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  /* background-color: white; */
+}
+
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #151F2B;
+}
+
+input {
+  padding-left: 8px;
+  border: 1px solid #4f5c6a;
+  margin: 10px 0 0 0;
+  width: 100%;
+  min-height: 2em;
+  max-height: 4em;
+  height: 2.5em;
+  border-radius: 10px;
 }
