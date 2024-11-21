@@ -1,6 +1,8 @@
 import '../styles/globals.css';
 import '../components/home.css';
 import Head from 'next/head';
+import user from '../reducers/user'
+import { Provider } from 'react-redux';
 
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
