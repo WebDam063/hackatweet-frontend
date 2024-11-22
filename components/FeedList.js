@@ -11,8 +11,6 @@ import { addAllTweetsToStore } from '../reducers/tweets'
 
 function FeedList() {
     const dispatch = useDispatch()
-    const [isLiked, setIsLiked] = useState(false);
-
     const user = useSelector((state) => state.user.value);
     const tweetsFromStore = useSelector((state) => state.tweets.value);
 
