@@ -6,7 +6,7 @@ export const Hashtag = ({ hashTagSearch, setHashTagSearch, setFetchHashtag }) =>
 
     return (
         <div className="newtweet-container">
-            <h1>Hashtag</h1>
+            <h1 className="hashtag">Hashtag</h1>
             <input
                 type="text"
                 className="newtweet-input"

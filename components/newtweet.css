@@ -20,6 +20,10 @@ h1.trend {
     margin: 0;
 }
 
+h1.hashtag {
+    margin: 0;
+}
+
 input {
     margin: 10px 0 20px 0;
     width: 100%;
