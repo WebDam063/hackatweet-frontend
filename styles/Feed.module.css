@@ -66,10 +66,22 @@
 }
 
 .heartIcon {
-    margin-right: 10px;
+    margin-right: 5px;
     color: #ffffff;
+    cursor: pointer;
 }
 
-.heartIcon.liked {
+.liked {
     color: red;
+}
+
+.tweetIcons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 5vw;
+}
+
+.likesDiv {
+    margin-right: 10px;
 }

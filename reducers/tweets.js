@@ -17,11 +17,14 @@ export const tweetsSlice = createSlice({
         addTweetToStore: (state, action) => {
             state.value.push(action.payload);
         },
+        removeTweetFromStore: (state, action) => {
+            state.value = state.value.filter((element) => element._id !== action.payload);
+        },
         removeAllTweets: (state) => {
             state.value = []
         }
     },
 });
 
-export const { addTweetToStore, addAllTweetsToStore, removeAllTweets } = tweetsSlice.actions;
+export const { addTweetToStore, addAllTweetsToStore, removeAllTweets, removeTweetFromStore } = tweetsSlice.actions;
 export default tweetsSlice.reducer;

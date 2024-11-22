@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Feed.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { addAllTweetsToStore } from '../reducers/tweets'
+import { faHeart, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { addAllTweetsToStore, removeTweetFromStore } from '../reducers/tweets'
 
 function FeedList() {
     const dispatch = useDispatch()
@@ -77,6 +77,21 @@ function FeedList() {
                 });
         }
     };
+    
+    const handleDelete = (tweetId) => {
+        fetch('http://localhost:3000/tweets/deletetweets', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ tweetId: tweetId})
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Le résultat est: ', data)
+            dispatch(removeTweetFromStore(data.tweet._id))
+        });
+    }
 
     // Utiliser useEffect pour récupérer les tweets lors du montage du composant
     useEffect(() => {
@@ -108,6 +123,7 @@ function FeedList() {
         tweetsFromStore.forEach((element, i) => {
             tweets_array.push({ username: element.username, text: element.text, _id: element._id, likes: element.likes });
         });
+        tweets_array = tweets_array.reverse()
         setTweets(tweets_array)
     }, [tweetsFromStore])
 
@@ -126,12 +142,22 @@ function FeedList() {
                     <div className={styles.tweetMsg}>
                         <p>{tweet.text}</p>
                     </div>
-                    <div onClick={() => handleLike(tweet._id)} style={{ cursor: 'pointer' }}>
-                        <FontAwesomeIcon
+                    <div className={styles.tweetIcons}>
+                        <div className={styles.likesDiv}>
+                            <FontAwesomeIcon
+                        onClick={() => handleLike(tweet._id)}
                             icon={faHeart}
+                            styles={{cursor: 'pointer'}}
                             className={`${styles.heartIcon} ${likedTweets.has(tweet._id) ? styles.liked : ''}`}
                         />
-                        <span>{tweet.likes}</span>
+                        <span className={`${likedTweets.has(tweet._id) ? styles.liked : ''}`}>{tweet.likes}</span>
+                        </div>
+                        {tweet.username == user.username && 
+                        <FontAwesomeIcon
+                            onClick={() => handleDelete(tweet._id)}
+                                icon={faTrashCan}
+                                style={{cursor: 'pointer'}}
+                            />}
                     </div>
                 </div>
             ))}
