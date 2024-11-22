@@ -13,6 +13,10 @@
 h1 {
     font-size: 28px;
     font-weight: 500;
+    margin: 0 0 18px 0;
+}
+
+h1.trend {
     margin: 0;
 }
 
@@ -44,6 +48,7 @@ input {
 }
 
 .newtweet-button {
+    font-weight: bold;
     width: 80px;
     border-radius: 2rem;
     padding: 4px 8px;

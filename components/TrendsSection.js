@@ -28,7 +28,7 @@ function TrendsSection({ setHashTagSearch }) {
     const hashtags_array = hashtags.map((hashtag, index) => {
         return (
             <div className={styles.row} key={index} onClick={() => setHashTagSearch(hashtag._id)}>
-                <h1 className={styles.hashtag}>{hashtag._id}</h1>
+                <h1 className={`${styles.hashtag} trend`}>{hashtag._id}</h1>
                 <span>{hashtag.count} tweet{hashtag.count > 1 && 's'}</span>
             </div >
         )
