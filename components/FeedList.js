@@ -107,6 +107,7 @@ function FeedList() {
             .then((data) => {
                 console.log("Fetched tweets:", data.data); // Log pour vérifier les tweets récupérés
                 // Mettre à jour l'état local des tweets
+                data.data.reverse()
                 setTweets(data.data);
                 dispatch(addAllTweetsToStore(data.data))
                 // Initialiser les tweets likés par l'utilisateur
