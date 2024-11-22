@@ -1,26 +1,28 @@
 import styles from '../styles/Trends.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { addAllTrendsToStore } from '../reducers/trends'
 
 function TrendsSection() {
-    const [hashtags, setHashtags] = useState([])
     const dispatch = useDispatch();
+    const [hashtags, setHashtags] = useState([])
     const user = useSelector((state) => state.user.value)
-    console.log('DEBUG 1', user);
+    const trends = useSelector((state) => state.trends.value)
+
+    const fetchTrends = async (onMount = true) => {
+        const response = await fetch('http://localhost:3000/tweets/trend')
+        const trendFromBack = await response.json()
+        onMount && dispatch(addAllTrendsToStore(trendFromBack.hashtags))
+        setHashtags(trendFromBack.hashtags)
+    }
 
     useEffect(() => {
-        const fetchTrend = async () => {
-            const response = await fetch('http://localhost:3000/tweets/trend', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: user.username })
-            })
-            const trendFromBack = await response.json()
-            console.log('DEBUG 2',trendFromBack.hashtags);
-            setHashtags(trendFromBack.hashtags)
-        }
-        fetchTrend()
+        fetchTrends()
     }, [])
+
+    useEffect(() => {
+        fetchTrends(false)
+    }, [trends])
 
 
     const hashtags_array = hashtags.map((hashtag, index) => {
