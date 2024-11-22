@@ -14,13 +14,14 @@
 
 .title {
    font-weight: 500;
-   margin: 2.5vh;
+   margin: 26px 2.5vh 26px 0;
    margin-left: 0;
+
 }
 
 .trendContainer {
     background-color: #1b232c;
-    padding: 10px;
+    /* padding: 10px; */
     border-radius: 10px;
     display:flex;
     flex-direction:column;
@@ -29,9 +30,18 @@
 
 .trendContainer > .row {
     text-align:left;
-    padding-left: 15px;
-    margin-bottom: 15px;
+    padding: 15px 15px;
+    cursor: pointer;
+    /* padding-left: 15px; */
+    /* margin-bottom: 15px; */
 }
+
+.trendContainer > .row:hover {
+    background-color: #232d3b;
+    border-radius: 10px;
+    opacity: 0.8;
+}
+
 
 .trendContainer > .row > h1 {
     font-size: 15px;

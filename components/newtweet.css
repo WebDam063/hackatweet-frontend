@@ -7,16 +7,17 @@
     color: white;
     padding: 20px;
     font-size: 15px;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 h1 {
+    font-size: 28px;
     font-weight: 500;
     margin: 0;
 }
 
 input {
-    margin: 10px 0 0 0;
+    margin: 10px 0 20px 0;
     width: 100%;
     min-height: 2em;
     max-height: 4em;
@@ -31,11 +32,15 @@ input {
 
 .bottom {
     align-self: flex-end;
-    width: 150px;
+    /* width: 150px; */
     /* border: 1px solid; */
     align-items: center;
     display: flex;
     justify-content: space-between;
+}
+
+.bottom>span {
+    margin-right: 14px;
 }
 
 .newtweet-button {
