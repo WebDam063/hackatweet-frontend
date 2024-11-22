@@ -9,45 +9,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 function FeedList() {
-  const user = useSelector((state) => state.user.value);
-  const [tweets, setTweets] = useState([]);
+    const user = useSelector((state) => state.user.value);
+    const [tweets, setTweets] = useState([]);
 
-  useEffect(() => {
-    console.log(tweets)
-    fetch("http://localhost:3000/tweets/gettweets", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          data.data.forEach((element, i) => {
-            const tweet_row = (
-              <div key={i} className={styles.FeedRow}>
-                <div className={styles.tweetAuthor}>
-                  <div className={styles.profileIcon}></div>
-                  <span className={styles.fullname}>{element.username}</span>
-                  <span>@{element.username}</span>
-                  <span>5 hours</span>
-                </div>
-                <div className={styles.tweetMsg}>
-                  <p>{element.text}</p>
-                </div>
-                <div>
-                  <FontAwesomeIcon icon={faHeart} />
-                </div>
-              </div>
-            );
-            setTweets(tweets => [...tweets, tweet_row]);
-          });
-        });
-  },[])
+    useEffect(() => {
+        console.log(tweets)
+        fetch("http://localhost:3000/tweets/gettweets", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log({ data });
+                let tweets_array = []
+                data.data.forEach((element, i) => {
+                    tweets_array.push(
+                        <div key={i} className={styles.FeedRow}>
+                            <div className={styles.tweetAuthor}>
+                                <div className={styles.profileIcon}></div>
+                                <span className={styles.fullname}>{element.username}</span>
+                                <span>@{element.username}</span>
+                                <span>5 hours</span>
+                            </div>
+                            <div className={styles.tweetMsg}>
+                                <p>{element.text}</p>
+                            </div>
+                            <div>
+                                <FontAwesomeIcon icon={faHeart} />
+                            </div>
+                        </div>
+                    );
+                });
+                setTweets(tweets_array);
+            });
+    }, [])
 
-  return (
-    <div className={styles.FeedRowContainer}>
-      {/* <div className={styles.FeedRow}>
+    return (
+        <div className={styles.FeedRowContainer}>
+            {/* <div className={styles.FeedRow}>
             <div className={styles.tweetAuthor}>    
                 <div className={styles.profileIcon}></div>
                 <span className={styles.fullname}>John Doe</span>
@@ -75,10 +77,9 @@ function FeedList() {
             <FontAwesomeIcon icon={faHeart} />
             </div>
         </div> */}
-      TEST
-      {tweets}
-    </div>
-  );
+            {tweets}
+        </div>
+    );
 }
 
 export default FeedList;
