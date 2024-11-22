@@ -1,11 +1,18 @@
 import styles from '../styles/Logout.module.css';
-import {logout} from '../reducers/user';
+import { logout } from '../reducers/user';
+import { removeAllTweets } from '../reducers/tweets';
 import { useDispatch, useSelector } from 'react-redux';
 
 
 function LogoutSection() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value)
+
+    const disconnect = () => {
+        dispatch(logout())
+        dispatch(removeAllTweets())
+    }
+ 
     return (
         <div className={styles.logout_section}>
             <div>
@@ -19,7 +26,7 @@ function LogoutSection() {
                         <span className={styles.userName}>@{user.username}</span>
                     </div>
                 </div>
-                <button className={styles.logoutBtn} onClick={() => dispatch(logout())}>Logout</button>
+                <button className={styles.logoutBtn} onClick={disconnect}>Logout</button>
             </div>
         </div>
     )
