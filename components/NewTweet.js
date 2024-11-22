@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addTweetToStore } from '../reducers/tweets'
+
 
 export const NewTweet = () => {
+    const dispatch = useDispatch()
     const [tweetValue, setTweetValue] = useState('')
     const user = useSelector((state) => state.user.value)
 
@@ -22,9 +25,9 @@ export const NewTweet = () => {
             body: JSON.stringify({ username, firstname, message: tweetValue, hashtags })
         })
         const dataFromBack = await response.json()
-        console.log({ dataFromBack });
 
         if (dataFromBack.result) {
+            dispatch(addTweetToStore(dataFromBack.tweet))
             setTweetValue('')
         }
     }

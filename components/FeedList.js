@@ -3,13 +3,34 @@ import { useSelector } from "react-redux";
 import styles from "../styles/Feed.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { addAllTweetsToStore } from '../reducers/tweets'
 
 function FeedList() {
+    const dispatch = useDispatch()
     // Récupérer l'utilisateur actuel depuis le store Redux
     const user = useSelector((state) => state.user.value);
+    const tweetsFromStore = useSelector((state) => state.tweets.value);
+
 
     // Déclarer un état local pour stocker les tweets
     const [tweets, setTweets] = useState([]);
+
+    const handleLike = (event) => {
+        const tweetId = event.target.getAttribute('data-tweetid');
+
+        fetch('http://localhost:3000/tweets/like', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tweetId: tweetId })
+        })
+            .then((response) => response.json())
+            .then(data => {
+                console.log(data)
+            })
+    }
+
     // Déclarer un état local pour stocker les tweets likés par l'utilisateur
     const [likedTweets, setLikedTweets] = useState(new Set());
 
@@ -86,6 +107,35 @@ function FeedList() {
         })
             .then((response) => response.json())
             .then((data) => {
+                dispatch(addAllTweetsToStore(data.data))
+            });
+    }, [])
+
+
+    useEffect(() => {
+        let tweets_array = []
+        tweetsFromStore.forEach((element, i) => {
+            tweets_array.push(
+                <div key={i} className={styles.FeedRow}>
+                    <div className={styles.tweetAuthor}>
+                        <div className={styles.profileIcon}></div>
+                        <span className={styles.fullname}>{element.username}</span>
+                        <span>@{element.username}</span>
+                        <span>5 hours</span>
+                    </div>
+                    <div className={styles.tweetMsg}>
+                        <p>{element.text}</p>
+                    </div>
+                    <div onClick={(e) => handleLike(e)} data-tweetid={element._id} >
+                        <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} style={{ 'pointerEvents': 'none' }} />
+                        <span style={{ 'pointerEvents': 'none' }}>{element.likes}</span>
+                    </div>
+                </div>
+            );
+        });
+        setTweets(tweets_array)
+    }, [tweetsFromStore])
+
                 console.log("Fetched tweets:", data.data); // Log pour vérifier les tweets récupérés
                 // Mettre à jour l'état local des tweets
                 setTweets(data.data);
