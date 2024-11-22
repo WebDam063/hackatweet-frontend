@@ -67,8 +67,9 @@
 
 .heartIcon {
     margin-right: 10px;
+    color: #ffffff;
 }
 
-.liked {
+.heartIcon.liked {
     color: red;
 }
