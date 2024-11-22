@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addTweetToStore } from '../reducers/tweets'
+import { addTrendsToStore } from '../reducers/trends'
 
 
 export const NewTweet = () => {
@@ -27,6 +28,8 @@ export const NewTweet = () => {
         const dataFromBack = await response.json()
 
         if (dataFromBack.result) {
+            console.log('dataFromBack.result', dataFromBack.tweet.hashtags);
+            dataFromBack.tweet.hashtags && dispatch(addTrendsToStore(dataFromBack.tweet.hashtags))
             dispatch(addTweetToStore(dataFromBack.tweet))
             setTweetValue('')
         }

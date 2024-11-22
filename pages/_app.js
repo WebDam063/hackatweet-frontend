@@ -4,6 +4,7 @@ import '../components/newtweet.css'
 import Head from 'next/head';
 import user from '../reducers/user'
 import tweets from '../reducers/tweets'
+import trends from '../reducers/trends'
 import { Provider } from 'react-redux';
 
 import { persistStore, persistReducer } from 'redux-persist';
@@ -12,7 +13,7 @@ import storage from 'redux-persist/lib/storage';
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-const reducers = combineReducers({ user, tweets });
+const reducers = combineReducers({ user, tweets, trends });
 
 const persistConfig = { key: 'hackatweet', storage };
 

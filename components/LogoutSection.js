@@ -1,6 +1,7 @@
 import styles from '../styles/Logout.module.css';
 import { logout } from '../reducers/user';
 import { removeAllTweets } from '../reducers/tweets';
+import { removeAllTrends } from '../reducers/trends';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -11,6 +12,7 @@ function LogoutSection() {
     const disconnect = () => {
         dispatch(logout())
         dispatch(removeAllTweets())
+        dispatch(removeAllTrends())
     }
  
     return (
