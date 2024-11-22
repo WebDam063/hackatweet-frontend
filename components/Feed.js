@@ -6,12 +6,16 @@ import LogoutSection from './LogoutSection';
 import TrendsSection from './TrendsSection'
 import FeedList from './FeedList';
 import { NewTweet } from './NewTweet';
+import { Hashtag } from './Hashtag'
+import { HashtagList } from './HashtagList'
 
-function Feed(){
+function Feed() {
   const user = useSelector((state) => state.user.value)
   const router = useRouter();
+  const [hashTagSearch, setHashTagSearch] = useState('')
+  const [ fetchHashtag, setFetchHashtag] = useState(false)
 
-  if(!user.username){
+  if (!user.username) {
     router.push('/')
     return;
   }
@@ -19,15 +23,16 @@ function Feed(){
   return (
     <div className={styles.body}>
       {/* // Logout section below */}
-     <LogoutSection />
-          {/* Feed section below */}
-          <div className={styles.feedContainer}>
-            <NewTweet />
-            <FeedList />
-          </div>
+      <LogoutSection setHashTagSearch={setHashTagSearch} />
+      {/* Feed section below */}
+      <div className={styles.feedContainer}>
+        {hashTagSearch.length > 0 ?
+          <><Hashtag hashTagSearch={hashTagSearch} setHashTagSearch={setHashTagSearch} setFetchHashtag={setFetchHashtag} /><HashtagList hashTagSearch={hashTagSearch} fetchHashtag={fetchHashtag} setFetchHashtag={setFetchHashtag} /></>
+          : <><NewTweet /><FeedList /></>}
+      </div>
 
-     {/* Trends section below */}
-     <TrendsSection/>
+      {/* Trends section below */}
+      <TrendsSection setHashTagSearch={setHashTagSearch} />
     </div>
   )
 }

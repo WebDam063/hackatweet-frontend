@@ -5,7 +5,7 @@ import { removeAllTrends } from '../reducers/trends';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-function LogoutSection() {
+function LogoutSection({ setHashTagSearch }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value)
 
@@ -18,7 +18,7 @@ function LogoutSection() {
     return (
         <div className={styles.logout_section}>
             <div>
-                <img src="icons/twitter.png" className={styles.twitterIcon}  alt="Twitter"/>
+                <img src="icons/twitter.png" className={styles.twitterIcon} alt="Twitter" onClick={() => setHashTagSearch('')}/>
             </div>
             <div className={styles.bottom}>
                 <div className={styles.profileInfos}>

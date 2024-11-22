@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { addAllTrendsToStore } from '../reducers/trends'
 
-function TrendsSection() {
+function TrendsSection({ setHashTagSearch }) {
     const dispatch = useDispatch();
     const [hashtags, setHashtags] = useState([])
     const user = useSelector((state) => state.user.value)
@@ -27,7 +27,7 @@ function TrendsSection() {
 
     const hashtags_array = hashtags.map((hashtag, index) => {
         return (
-            <div className={styles.row} key={index}>
+            <div className={styles.row} key={index} onClick={() => setHashTagSearch(hashtag._id)}>
                 <h1 className={styles.hashtag}>{hashtag._id}</h1>
                 <span>{hashtag.count} tweet{hashtag.count > 1 && 's'}</span>
             </div >
