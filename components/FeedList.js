@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Feed.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -7,30 +7,13 @@ import { addAllTweetsToStore } from '../reducers/tweets'
 
 function FeedList() {
     const dispatch = useDispatch()
+
     // Récupérer l'utilisateur actuel depuis le store Redux
     const user = useSelector((state) => state.user.value);
     const tweetsFromStore = useSelector((state) => state.tweets.value);
 
-
     // Déclarer un état local pour stocker les tweets
     const [tweets, setTweets] = useState([]);
-
-    const handleLike = (event) => {
-        const tweetId = event.target.getAttribute('data-tweetid');
-
-        fetch('http://localhost:3000/tweets/like', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ tweetId: tweetId })
-        })
-            .then((response) => response.json())
-            .then(data => {
-                console.log(data)
-            })
-    }
-
     // Déclarer un état local pour stocker les tweets likés par l'utilisateur
     const [likedTweets, setLikedTweets] = useState(new Set());
 
@@ -45,25 +28,25 @@ function FeedList() {
                 },
                 body: JSON.stringify({ tweetId: tweetId })
             })
-            .then((response) => response.json())
-            .then(data => {
-                console.log("Unlike response:", data); // Log pour vérifier la réponse
-                // Mettre à jour l'état local des tweets
-                setTweets(prevTweets =>
-                    prevTweets.map(tweet =>
-                        tweet._id === tweetId ? { ...tweet, likes: data.likes } : tweet
-                    )
-                );
-                // Mettre à jour l'état local des tweets likés
-                setLikedTweets(prevLikedTweets => {
-                    const newLikedTweets = new Set(prevLikedTweets);
-                    newLikedTweets.delete(tweetId);
-                    return newLikedTweets;
+                .then((response) => response.json())
+                .then(data => {
+                    console.log("Unlike response:", data); // Log pour vérifier la réponse
+                    // Mettre à jour l'état local des tweets
+                    setTweets(prevTweets =>
+                        prevTweets.map(tweet =>
+                            tweet._id === tweetId ? { ...tweet, likes: data.likes } : tweet
+                        )
+                    );
+                    // Mettre à jour l'état local des tweets likés
+                    setLikedTweets(prevLikedTweets => {
+                        const newLikedTweets = new Set(prevLikedTweets);
+                        newLikedTweets.delete(tweetId);
+                        return newLikedTweets;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error unliking tweet:", error); // Log pour vérifier les erreurs
                 });
-            })
-            .catch(error => {
-                console.error("Error unliking tweet:", error); // Log pour vérifier les erreurs
-            });
         } else {
             // Si le tweet n'est pas liké, envoyer une requête pour liker le tweet
             fetch('http://localhost:3000/tweets/like', {
@@ -73,25 +56,25 @@ function FeedList() {
                 },
                 body: JSON.stringify({ tweetId: tweetId })
             })
-            .then((response) => response.json())
-            .then(data => {
-                console.log("Like response:", data); // Log pour vérifier la réponse
-                // Mettre à jour l'état local des tweets
-                setTweets(prevTweets =>
-                    prevTweets.map(tweet =>
-                        tweet._id === tweetId ? { ...tweet, likes: data.likes } : tweet
-                    )
-                );
-                // Mettre à jour l'état local des tweets likés
-                setLikedTweets(prevLikedTweets => {
-                    const newLikedTweets = new Set(prevLikedTweets);
-                    newLikedTweets.add(tweetId);
-                    return newLikedTweets;
+                .then((response) => response.json())
+                .then(data => {
+                    console.log("Like response:", data); // Log pour vérifier la réponse
+                    // Mettre à jour l'état local des tweets
+                    setTweets(prevTweets =>
+                        prevTweets.map(tweet =>
+                            tweet._id === tweetId ? { ...tweet, likes: data.likes } : tweet
+                        )
+                    );
+                    // Mettre à jour l'état local des tweets likés
+                    setLikedTweets(prevLikedTweets => {
+                        const newLikedTweets = new Set(prevLikedTweets);
+                        newLikedTweets.add(tweetId);
+                        return newLikedTweets;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error liking tweet:", error); // Log pour vérifier les erreurs
                 });
-            })
-            .catch(error => {
-                console.error("Error liking tweet:", error); // Log pour vérifier les erreurs
-            });
         }
     };
 
@@ -107,38 +90,10 @@ function FeedList() {
         })
             .then((response) => response.json())
             .then((data) => {
-                dispatch(addAllTweetsToStore(data.data))
-            });
-    }, [])
-
-
-    useEffect(() => {
-        let tweets_array = []
-        tweetsFromStore.forEach((element, i) => {
-            tweets_array.push(
-                <div key={i} className={styles.FeedRow}>
-                    <div className={styles.tweetAuthor}>
-                        <div className={styles.profileIcon}></div>
-                        <span className={styles.fullname}>{element.username}</span>
-                        <span>@{element.username}</span>
-                        <span>5 hours</span>
-                    </div>
-                    <div className={styles.tweetMsg}>
-                        <p>{element.text}</p>
-                    </div>
-                    <div onClick={(e) => handleLike(e)} data-tweetid={element._id} >
-                        <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} style={{ 'pointerEvents': 'none' }} />
-                        <span style={{ 'pointerEvents': 'none' }}>{element.likes}</span>
-                    </div>
-                </div>
-            );
-        });
-        setTweets(tweets_array)
-    }, [tweetsFromStore])
-
                 console.log("Fetched tweets:", data.data); // Log pour vérifier les tweets récupérés
                 // Mettre à jour l'état local des tweets
                 setTweets(data.data);
+                dispatch(addAllTweetsToStore(data.data))
                 // Initialiser les tweets likés par l'utilisateur
                 setLikedTweets(new Set(data.data.filter(tweet => tweet.likedByUser).map(tweet => tweet._id)));
             })
@@ -147,7 +102,17 @@ function FeedList() {
             });
     }, [user]); // Dépendance sur l'utilisateur pour récupérer les tweets lorsque l'utilisateur change
 
-    // Rendre les tweets
+
+    useEffect(() => {
+        let tweets_array = []
+        tweetsFromStore.forEach((element, i) => {
+            tweets_array.push({ username: element.username, text: element.text, _id: element._id, likes: element.likes });
+        });
+        setTweets(tweets_array)
+    }, [tweetsFromStore])
+
+
+
     return (
         <div className={styles.FeedRowContainer}>
             {tweets.map((tweet, i) => (
