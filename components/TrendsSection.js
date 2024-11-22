@@ -6,7 +6,7 @@ function TrendsSection() {
     const [hashtags, setHashtags] = useState([])
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value)
-    console.log(user);
+    console.log('DEBUG 1', user);
 
     useEffect(() => {
         const fetchTrend = async () => {
@@ -16,7 +16,7 @@ function TrendsSection() {
                 body: JSON.stringify({ username: user.username })
             })
             const trendFromBack = await response.json()
-            console.log(trendFromBack.hashtags);
+            console.log('DEBUG 2',trendFromBack.hashtags);
             setHashtags(trendFromBack.hashtags)
         }
         fetchTrend()
@@ -36,7 +36,7 @@ function TrendsSection() {
         <div className={styles.trends_section}>
             <h1 className={styles.title}>Trends</h1>
             <div className={styles.trendContainer}>
-                {hashtags_array.length > 1 ? hashtags_array : <p className={styles.notrend}>No trends yet</p>}
+                {hashtags_array.length > 0 ? hashtags_array : <p className={styles.notrend}>No trends yet</p>}
             </div>
         </div>
     )
