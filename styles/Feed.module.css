@@ -17,6 +17,8 @@
 .FeedRowContainer {
     display:flex;
     flex-direction: column;
+    overflow: scroll;
+    scrollbar-width: none;
 }
 
 .FeedRowContainer > .FeedRow {

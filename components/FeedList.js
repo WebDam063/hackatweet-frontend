@@ -1,38 +1,82 @@
 import { useState, useEffect } from "react";
-import { login } from "../reducers/user";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import styles from "../styles/Feed.module.css";
-import LogoutSection from "./LogoutSection";
-import TrendsSection from "./TrendsSection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 function FeedList() {
-    const [isLiked, setIsLiked] = useState(false);
-
+    // Récupérer l'utilisateur actuel depuis le store Redux
     const user = useSelector((state) => state.user.value);
+
+    // Déclarer un état local pour stocker les tweets
     const [tweets, setTweets] = useState([]);
+    // Déclarer un état local pour stocker les tweets likés par l'utilisateur
+    const [likedTweets, setLikedTweets] = useState(new Set());
 
-    const handleLike = (event) => {
-        const tweetId = event.target.getAttribute('data-tweetid');
-        
-        fetch('http://localhost:3000/tweets/like', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({tweetId: tweetId})
-        })
-        .then((response) => response.json())
-        .then(data => {
-            console.log(data)
-        })
+    // Fonction pour gérer le like d'un tweet
+    const handleLike = (tweetId) => {
+        if (likedTweets.has(tweetId)) {
+            // Si le tweet est déjà liké, envoyer une requête pour supprimer le like
+            fetch('http://localhost:3000/tweets/unlike', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ tweetId: tweetId })
+            })
+            .then((response) => response.json())
+            .then(data => {
+                console.log("Unlike response:", data); // Log pour vérifier la réponse
+                // Mettre à jour l'état local des tweets
+                setTweets(prevTweets =>
+                    prevTweets.map(tweet =>
+                        tweet._id === tweetId ? { ...tweet, likes: data.likes } : tweet
+                    )
+                );
+                // Mettre à jour l'état local des tweets likés
+                setLikedTweets(prevLikedTweets => {
+                    const newLikedTweets = new Set(prevLikedTweets);
+                    newLikedTweets.delete(tweetId);
+                    return newLikedTweets;
+                });
+            })
+            .catch(error => {
+                console.error("Error unliking tweet:", error); // Log pour vérifier les erreurs
+            });
+        } else {
+            // Si le tweet n'est pas liké, envoyer une requête pour liker le tweet
+            fetch('http://localhost:3000/tweets/like', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ tweetId: tweetId })
+            })
+            .then((response) => response.json())
+            .then(data => {
+                console.log("Like response:", data); // Log pour vérifier la réponse
+                // Mettre à jour l'état local des tweets
+                setTweets(prevTweets =>
+                    prevTweets.map(tweet =>
+                        tweet._id === tweetId ? { ...tweet, likes: data.likes } : tweet
+                    )
+                );
+                // Mettre à jour l'état local des tweets likés
+                setLikedTweets(prevLikedTweets => {
+                    const newLikedTweets = new Set(prevLikedTweets);
+                    newLikedTweets.add(tweetId);
+                    return newLikedTweets;
+                });
+            })
+            .catch(error => {
+                console.error("Error liking tweet:", error); // Log pour vérifier les erreurs
+            });
+        }
+    };
 
-    }
-
+    // Utiliser useEffect pour récupérer les tweets lors du montage du composant
     useEffect(() => {
-        //console.log(tweets)
+        // Envoyer une requête POST pour récupérer les tweets
         fetch("http://localhost:3000/tweets/gettweets", {
             method: "POST",
             headers: {
@@ -42,34 +86,40 @@ function FeedList() {
         })
             .then((response) => response.json())
             .then((data) => {
-                //console.log({ data });
-                let tweets_array = []
-                data.data.forEach((element, i) => {
-                    tweets_array.push(
-                        <div key={i}  className={styles.FeedRow}>
-                            <div className={styles.tweetAuthor}>
-                                <div className={styles.profileIcon}></div>
-                                <span className={styles.fullname}>{element.username}</span>
-                                <span>@{element.username}</span>
-                                <span>5 hours</span>
-                            </div>
-                            <div className={styles.tweetMsg}>
-                                <p>{element.text}</p>
-                            </div>
-                            <div onClick={(e) => handleLike(e)} data-tweetid={element._id} >
-                                <FontAwesomeIcon icon={faHeart} className={styles.heartIcon}  style={{'pointerEvents':'none'}} />
-                                <span  style={{'pointerEvents':'none'}}>{element.likes}</span>
-                            </div>
-                        </div>
-                    );
-                });
-                setTweets(tweets_array);
+                console.log("Fetched tweets:", data.data); // Log pour vérifier les tweets récupérés
+                // Mettre à jour l'état local des tweets
+                setTweets(data.data);
+                // Initialiser les tweets likés par l'utilisateur
+                setLikedTweets(new Set(data.data.filter(tweet => tweet.likedByUser).map(tweet => tweet._id)));
+            })
+            .catch(error => {
+                console.error("Error fetching tweets:", error); // Log pour vérifier les erreurs
             });
-    }, [])
+    }, [user]); // Dépendance sur l'utilisateur pour récupérer les tweets lorsque l'utilisateur change
 
+    // Rendre les tweets
     return (
         <div className={styles.FeedRowContainer}>
-            {tweets}
+            {tweets.map((tweet, i) => (
+                <div key={i} className={styles.FeedRow}>
+                    <div className={styles.tweetAuthor}>
+                        <div className={styles.profileIcon}></div>
+                        <span className={styles.fullname}>{tweet.username}</span>
+                        <span>@{tweet.username}</span>
+                        <span>5 hours</span>
+                    </div>
+                    <div className={styles.tweetMsg}>
+                        <p>{tweet.text}</p>
+                    </div>
+                    <div onClick={() => handleLike(tweet._id)} style={{ cursor: 'pointer' }}>
+                        <FontAwesomeIcon
+                            icon={faHeart}
+                            className={`${styles.heartIcon} ${likedTweets.has(tweet._id) ? styles.liked : ''}`}
+                        />
+                        <span>{tweet.likes}</span>
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }
