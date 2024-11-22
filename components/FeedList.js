@@ -9,11 +9,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 function FeedList() {
+    const [isLiked, setIsLiked] = useState(false);
+
     const user = useSelector((state) => state.user.value);
     const [tweets, setTweets] = useState([]);
 
+    const handleLike = (event) => {
+        const tweetId = event.target.getAttribute('data-tweetid');
+        
+        fetch('http://localhost:3000/tweets/like', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({tweetId: tweetId})
+        })
+        .then((response) => response.json())
+        .then(data => {
+            console.log(data)
+        })
+
+    }
+
     useEffect(() => {
-        console.log(tweets)
+        //console.log(tweets)
         fetch("http://localhost:3000/tweets/gettweets", {
             method: "POST",
             headers: {
@@ -23,11 +42,11 @@ function FeedList() {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log({ data });
+                //console.log({ data });
                 let tweets_array = []
                 data.data.forEach((element, i) => {
                     tweets_array.push(
-                        <div key={i} className={styles.FeedRow}>
+                        <div key={i}  className={styles.FeedRow}>
                             <div className={styles.tweetAuthor}>
                                 <div className={styles.profileIcon}></div>
                                 <span className={styles.fullname}>{element.username}</span>
@@ -37,8 +56,9 @@ function FeedList() {
                             <div className={styles.tweetMsg}>
                                 <p>{element.text}</p>
                             </div>
-                            <div>
-                                <FontAwesomeIcon icon={faHeart} />
+                            <div onClick={(e) => handleLike(e)} data-tweetid={element._id} >
+                                <FontAwesomeIcon icon={faHeart} className={styles.heartIcon}  style={{'pointerEvents':'none'}} />
+                                <span  style={{'pointerEvents':'none'}}>{element.likes}</span>
                             </div>
                         </div>
                     );
@@ -49,34 +69,6 @@ function FeedList() {
 
     return (
         <div className={styles.FeedRowContainer}>
-            {/* <div className={styles.FeedRow}>
-            <div className={styles.tweetAuthor}>    
-                <div className={styles.profileIcon}></div>
-                <span className={styles.fullname}>John Doe</span>
-                <span>@JohnDoe</span>
-                <span>5 hours</span>
-            </div>
-            <div className={styles.tweetMsg}>
-                <p>Ceci est un message de test</p>
-            </div>
-            <div>
-            <FontAwesomeIcon icon={faHeart} />
-            </div>
-        </div>
-        <div className={styles.FeedRow}>
-            <div className={styles.tweetAuthor}>
-                <div className={styles.profileIcon}></div>
-                <span className={styles.fullname}>MR Dams</span>
-                <span>@MRDams</span>
-                <span>2 hours</span>
-            </div>
-            <div className={styles.tweetMsg}>
-                <p>Teeeest</p>
-            </div>
-            <div>
-            <FontAwesomeIcon icon={faHeart} />
-            </div>
-        </div> */}
             {tweets}
         </div>
     );

@@ -55,3 +55,14 @@
 .tweetMsg > p {
     font-weight: 400;
 }
+
+.feedContainer {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    height: 100vh;
+}
+
+.heartIcon {
+    margin-right: 10px;
+}

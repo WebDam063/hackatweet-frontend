@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     value: { token: null, username: null, firstname: null },
 };
-
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -17,7 +16,6 @@ export const userSlice = createSlice({
             state.value.token = null;
             state.value.username = null;
             state.value.firstname = null;
-            console.log('Successfully disconnected')
         },
     },
 });
